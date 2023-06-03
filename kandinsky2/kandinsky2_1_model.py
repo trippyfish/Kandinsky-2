@@ -310,7 +310,10 @@ class Kandinsky2_1:
         prior_steps="25",
         negative_prior_prompt="",
         negative_decoder_prompt="",
+        seed=0,
     ):
+        torch.manual_seed(seed)
+
         # generate clip embeddings
         image_emb = self.generate_clip_emb(
             prompt,

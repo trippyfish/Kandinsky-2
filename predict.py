@@ -1,3 +1,4 @@
+import os
 from typing import List
 from cog import BasePredictor, Input, Path
 from kandinsky2 import get_kandinsky2
@@ -44,7 +45,12 @@ class Predictor(BasePredictor):
             default=1,
             choices=[1, 2, 3, 4],
         ),
+        seed: int = Input(
+            description="Random seed. Leave blank to randomize the seed", default=None
+        ),
     ) -> List[Path]:
+        if seed is None:
+            seed = int.from_bytes(os.urandom(2), "big")
         images = self.model.generate_text2img(
             prompt,
             num_steps=num_inference_steps,
@@ -55,6 +61,7 @@ class Predictor(BasePredictor):
             sampler=scheduler,
             prior_cf_scale=prior_cf_scale,
             prior_steps=prior_steps,
+            seed=seed,
         )
         output = []
         for i, im in enumerate(images):
