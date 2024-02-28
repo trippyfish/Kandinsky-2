@@ -246,7 +246,10 @@ class Kandinsky2_1:
                 return x.clamp(-2, 2)
 
         if sampler == "p_sampler":
-            self.model.del_cache()
+            if torch.cuda.device_count() > 1:
+                self.model.module.del_cache()
+            else
+                self.model.del_cache()
             samples = diffusion.p_sample_loop(
                 model_fn,
                 (full_batch_size, 4, new_h, new_w),
@@ -257,7 +260,10 @@ class Kandinsky2_1:
                 init_step=init_step,
                 denoised_fn=denoised_fun,
             )[:batch_size]
-            self.model.del_cache()
+            if torch.cuda.device_count() > 1:
+                self.model.module.del_cache()
+            else
+                self.model.del_cache()
         else:
             if sampler == "ddim_sampler":
                 sampler = DDIMSampler(
@@ -274,7 +280,10 @@ class Kandinsky2_1:
             else:
                 raise ValueError("Only ddim_sampler and plms_sampler is available")
                 
-            self.model.del_cache()
+            if torch.cuda.device_count() > 1:
+                self.model.module.del_cache()
+            else
+                self.model.del_cache()
             samples, _ = sampler.sample(
                 num_steps,
                 batch_size * 2,
@@ -283,7 +292,10 @@ class Kandinsky2_1:
                 x_T=noise,
                 init_step=init_step,
             )
-            self.model.del_cache()
+            if torch.cuda.device_count() > 1:
+                self.model.module.del_cache()
+            else
+                self.model.del_cache()
             samples = samples[:batch_size]
             
         if self.use_image_enc:
