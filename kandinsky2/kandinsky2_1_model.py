@@ -2,6 +2,7 @@ from transformers import AutoTokenizer
 from PIL import Image
 import cv2
 import torch
+from torch.nn.parallel import DataParallel
 from omegaconf import OmegaConf
 import math
 from copy import deepcopy
@@ -101,6 +102,8 @@ class Kandinsky2_1:
         self.text_encoder = self.text_encoder.to(self.device).eval()
         self.prior = self.prior.to(self.device).eval()
         self.model.eval()
+        if torch.cuda.device_count() > 1:
+            self.model = nn.DataParallel(self.model)
         self.model.to(self.device)
 
     def get_new_h_w(self, h, w):

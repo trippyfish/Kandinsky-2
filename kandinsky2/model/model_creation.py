@@ -1,6 +1,3 @@
-import torch
-import torch.nn as nn
-
 from .gaussian_diffusion import get_named_beta_schedule
 from . import gaussian_diffusion as gd
 from .respace import SpacedDiffusion, space_timesteps
@@ -63,7 +60,7 @@ def create_model(
             model_cls = Text2ImUNet2_1
         else:
             ValueError("Only 2.0 and 2.1 versions are available")
-    return nn.DataParallel(model_cls(
+    return model_cls(
         in_channels=in_channels,
         model_channels=num_channels,
         out_channels=out_channels,
@@ -83,7 +80,7 @@ def create_model(
         text_encoder_in_dim2=text_encoder_in_dim2,
         pooling_type=pooling_type,
         **kwargs,
-    ))
+    )
 
 
 def create_gaussian_diffusion(
