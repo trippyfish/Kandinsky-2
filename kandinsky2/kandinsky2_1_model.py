@@ -248,7 +248,7 @@ class Kandinsky2_1:
         if sampler == "p_sampler":
             if torch.cuda.device_count() > 1:
                 self.model.module.del_cache()
-            else
+            else:
                 self.model.del_cache()
             samples = diffusion.p_sample_loop(
                 model_fn,
@@ -262,7 +262,7 @@ class Kandinsky2_1:
             )[:batch_size]
             if torch.cuda.device_count() > 1:
                 self.model.module.del_cache()
-            else
+            else:
                 self.model.del_cache()
         else:
             if sampler == "ddim_sampler":
@@ -282,7 +282,7 @@ class Kandinsky2_1:
                 
             if torch.cuda.device_count() > 1:
                 self.model.module.del_cache()
-            else
+            else:
                 self.model.del_cache()
             samples, _ = sampler.sample(
                 num_steps,
@@ -294,7 +294,7 @@ class Kandinsky2_1:
             )
             if torch.cuda.device_count() > 1:
                 self.model.module.del_cache()
-            else
+            else:
                 self.model.del_cache()
             samples = samples[:batch_size]
             
