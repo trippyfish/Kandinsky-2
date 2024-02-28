@@ -103,7 +103,7 @@ class Kandinsky2_1:
         self.prior = self.prior.to(self.device).eval()
         self.model.eval()
         if torch.cuda.device_count() > 1:
-            self.model = nn.DataParallel(self.model)
+            self.model = DataParallel(self.model)
         self.model.to(self.device)
 
     def get_new_h_w(self, h, w):
